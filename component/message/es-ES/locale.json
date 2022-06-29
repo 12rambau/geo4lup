@@ -1,7 +1,7 @@
 {
     "app": {
-        "title": "Mi falsa aplicación",
-        "footer": "Al infinito y más allá \u00A9 {}",
+        "title": "geo4lup",
+        "footer": "Al infinito y m\u00e1s all\u00e1 \u00a9 {}",
         "drawer_item": {
             "about": "Sobre nosotros"
         }

@@ -1,4 +1,4 @@
-# SEPAL_UI_TEMPLATE
+# geo4lup
 
 First off, thank you for considering contributing to the development of this module. It's people like you that make SEPAL a living platform. If it's your first time contributing on a github project take a look at this [link](http://makeapullrequest.com/) to better understand what a PR is. 
 
@@ -15,7 +15,7 @@ SEPAL modules are of course meant to work on the sepal plateform so you should u
 To develop in this project first fork the module in your own github repositories and clone the repository with a terminal:
 
 ```
-$ git clone https://github.com/12rambau/sepal_ui_template.git
+$ git clone https://github.com/12rambau/geo4lup
 ```
 
 ## how to work with the issue tracker 

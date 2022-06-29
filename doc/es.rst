@@ -1,5 +1,5 @@
-Module_name
-===========
+geo4lup
+=======
 
 .. warning::
 
@@ -7,4 +7,4 @@ Module_name
 
 .. tip::
 
-    Por favor, abre una incidencia en su repositorio : https://github.com/12rambau/sepal_ui_template/issues/new
+    Por favor, abre una incidencia en su repositorio : https://github.com/12rambau/geo4lup/issues/new
