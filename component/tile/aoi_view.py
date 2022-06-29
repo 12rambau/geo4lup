@@ -44,6 +44,9 @@ class AoiView(aoi.AoiView):
         # add js behaviour
         self.w_method.observe(self.select_subregional, "v_model")
 
+        # select subregional by default
+        self.w_method.v_model = "ASSET"
+
     @su.loading_button(debug=False)
     def _update_aoi(self, widget, event, data):
         """
