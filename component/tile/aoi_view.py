@@ -4,8 +4,9 @@ from sepal_ui import sepalwidgets as sw
 from sepal_ui import aoi
 from sepal_ui.scripts import utils as su
 from sepal_ui import color as sc
-
 import ee
+
+from component.message import cm
 
 
 class AoiView(aoi.AoiView):
@@ -14,6 +15,34 @@ class AoiView(aoi.AoiView):
     the extra coloring parameters used in this application. We are forced to copy/paste
     the _update_aoi function
     """
+
+    def __init__(self, **kwargs):
+
+        # limit the interaction to 3 types:
+        # custom asset
+        # country
+        # administrative level 1
+        kwargs["methods"] = ["ADMIN0", "ADMIN1", "ASSET"]
+
+        super().__init__(**kwargs)
+
+        # change the name of the custom asset to "subregional"
+        tmp_item = self.w_method.items.copy()
+        for i in tmp_item:
+            if "value" in i:
+                if i["value"] == "ASSET":
+                    i["text"] = cm.aoi.subregion.capitalize()
+                    break
+
+        # forced to empty the item list to trigger the event
+        self.w_method.items = []
+        self.w_method.items = tmp_item
+
+        # make the asset selector readonly
+        self.w_asset.readonly = True
+
+        # add js behaviour
+        self.w_method.observe(self.select_subregional, "v_model")
 
     @su.loading_button(debug=False)
     def _update_aoi(self, widget, event, data):
@@ -45,6 +74,18 @@ class AoiView(aoi.AoiView):
 
         # tell the rest of the apps that the aoi have been updated
         self.updated += 1
+
+    def select_subregional(self, change):
+        """select the subregional asset and hide the asset selector"""
+
+        if self.w_method.v_model == None:
+            return
+
+        if self.w_method.v_model == "ASSET":
+            self.w_asset.hide()
+            self.w_asset.w_file.v_model = "projects/ee-geo4lup/assets/cafi_LSIB"
+
+        return
 
 
 class AoiControl(WidgetControl):
