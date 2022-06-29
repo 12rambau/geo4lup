@@ -41,6 +41,20 @@ class AoiView(aoi.AoiView):
         # make the asset selector readonly
         self.w_asset.readonly = True
 
+        # only use the countries that are in the CAFI project
+        countries = [
+            68,  # Democratic republic of the Congo
+            59,  # congo
+            89,  # gabon
+            45,  # cameroon
+            76,  # equatorial guinea
+            49,  # Central African Republic
+        ]
+        tmp_item = self.w_admin_0.items.copy()
+        tmp_item = [i for i in tmp_item if i["value"] in countries]
+        self.w_admin_0.items = []
+        self.w_admin_0.items = tmp_item
+
         # add js behaviour
         self.w_method.observe(self.select_subregional, "v_model")
 
