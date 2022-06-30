@@ -12,26 +12,29 @@ class ParameterControl(WidgetControl):
         self.m = m
 
         # create a clickable btn
-        btn = sm.MapBtn(logo="fas fa-cogs", v_on="menu.on")
+        btn = sm.MapBtn(logo="fas fa-cog", v_on="menu.on")
         slot = {"name": "activator", "variable": "menu", "children": btn}
 
         # create the paramter widgets
         w_bins = sw.Select(items=[], label="Toto", v_model=None)
-        self.tile = sw.Tile(
-            "nested_tile",
-            cm.parameter.title,
-            inputs=[w_bins],
-            btn=sw.Btn(),
-            alert=sw.Alert(),
+        title = sw.Html(tag="h4", children=[cm.parameter.title.capitalize()])
+        card_title = sw.CardTitle(children=[title])
+        self.content = sw.Tile(
+            "", "", inputs=[w_bins], btn=sw.Btn(), alert=sw.Alert()
+        ).nest()
+        self.content.children[0].class_list.remove("pa-5")
+        self.content.children[0].raised = False
+        self.content.children[0].elevation = 0
+        card_text = sw.CardText(children=[self.content])
+        card = sw.Card(
+            tile=True,
+            max_height="40vh",
+            min_height="40vh",
+            max_width="400px",
+            min_width="400px",
+            children=[card_title, card_text],
+            style_="overflow: auto",
         )
-
-        # customize the tile to fit the map requirements
-        self.tile.max_height = "40vh"
-        self.tile.min_height = "40vh"
-        self.tile.min_width = "400px"
-        self.tile.max_width = "400px"
-        self.tile.style_ = "overflow: auto"
-        self.tile.class_list.add("pa-2")
 
         # assemble everything in a menu
         self.menu = sw.Menu(
@@ -39,7 +42,7 @@ class ParameterControl(WidgetControl):
             value=False,
             close_on_click=False,
             close_on_content_click=False,
-            children=[self.tile],
+            children=[card],
             v_slots=[slot],
             offset_x=True,
             top=True,

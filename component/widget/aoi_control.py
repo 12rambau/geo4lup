@@ -8,7 +8,7 @@ import ee
 
 from component.message import cm
 
-__all__ = ["AOIControl"]
+__all__ = ["AoiControl"]
 
 
 class AoiView(aoi.AoiView):
@@ -27,6 +27,9 @@ class AoiView(aoi.AoiView):
         kwargs["methods"] = ["ADMIN0", "ADMIN1", "ASSET"]
 
         super().__init__(**kwargs)
+
+        # remove elevation
+        self.elevation = 0
 
         # change the name of the custom asset to "subregional"
         tmp_item = self.w_method.items.copy()
@@ -110,16 +113,24 @@ class AoiView(aoi.AoiView):
 class AoiControl(WidgetControl):
     def __init__(self, m):
 
+        # set the aoi_model to share it with the other components
+        self.aoi_view = AoiView(map_=m)
+
         # create a clickable btn
         btn = sm.MapBtn(logo="fas fa-map-marker-alt", v_on="menu.on")
         slot = {"name": "activator", "variable": "menu", "children": btn}
-        content = AoiView(map_=m)
-        content.max_height = "40vh"
-        content.min_height = "40vh"
-        content.min_width = "400px"
-        content.max_width = "400px"
-        content.style_ = "overflow: auto"
-        content.class_list.add("pa-2")
+        title = sw.Html(tag="h4", children=[cm.aoi.title])
+        card_title = sw.CardTitle(children=[title])
+        card_text = sw.CardText(children=[self.aoi_view])
+        card = sw.Card(
+            tile=True,
+            max_height="40vh",
+            min_height="40vh",
+            max_width="400px",
+            min_width="400px",
+            children=[card_title, card_text],
+            style_="overflow: auto",
+        )
 
         # assemble everything in a menu
         self.menu = sw.Menu(
@@ -127,7 +138,7 @@ class AoiControl(WidgetControl):
             value=False,
             close_on_click=False,
             close_on_content_click=False,
-            children=[content],
+            children=[card],
             v_slots=[slot],
             offset_x=True,
             top=True,
