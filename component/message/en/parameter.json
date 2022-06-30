@@ -1,5 +1,17 @@
 {
     "parameter": {
-        "title": "parameter"
+        "title": "parameter",
+        "bin": {
+            "label": "binning",
+            "items": {
+                "TILE100": "tiles 100km",
+                "TILE20": "tile 20km",
+                "TILE10": "tile 10km",
+                "ADMIN0": "country",
+                "ADMIN1": "Administrative layer 1",
+                "ADMIN2": "Administrative layer 2"
+            }
+        },
+        "btn": "validate parameters"
     }
 }

@@ -3,6 +3,7 @@ from sepal_ui import sepalwidgets as sw
 from sepal_ui import mapping as sm
 
 from component.message import cm
+from component import parameter as cp
 
 
 class ParameterControl(WidgetControl):
@@ -16,12 +17,19 @@ class ParameterControl(WidgetControl):
         slot = {"name": "activator", "variable": "menu", "children": btn}
 
         # create the paramter widgets
-        w_bins = sw.Select(items=[], label="Toto", v_model=None)
+        bin_items = [
+            {"text": getattr(cm.parameter.bin.items, i), "value": i}
+            for i in cp.bin_items
+        ]
+        w_bins = sw.Select(
+            items=bin_items, label=cm.parameter.bin.label.capitalize(), v_model=None
+        )
         title = sw.Html(tag="h4", children=[cm.parameter.title.capitalize()])
         card_title = sw.CardTitle(children=[title])
         self.content = sw.Tile(
-            "", "", inputs=[w_bins], btn=sw.Btn(), alert=sw.Alert()
+            "", "", inputs=[w_bins], btn=sw.Btn(cm.parameter.btn), alert=sw.Alert()
         ).nest()
+        self.content.class_list.replace("ma-5", "ma-0")
         self.content.children[0].class_list.remove("pa-5")
         self.content.children[0].raised = False
         self.content.children[0].elevation = 0
