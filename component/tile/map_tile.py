@@ -12,11 +12,13 @@ class MapTile(sw.Tile):
 
         # create the different control to add to the map
         fullscreen_control = sm.FullScreenControl(self.map, position="topright")
-        aoi_control = cw.AoiControl(self.map)
-        parameter_control = cw.ParameterControl(self.map)
+        self.aoi_control = cw.AoiControl(self.map)
+        self.parameter_control = cw.ParameterControl(
+            self.map, self.aoi_control.aoi_view.model
+        )
 
         self.map.add_control(fullscreen_control)
-        self.map.add_control(aoi_control)
-        self.map.add_control(parameter_control)
+        self.map.add_control(self.parameter_control)
+        self.map.add_control(self.aoi_control)
 
         super().__init__(id_="map_tile", title="", inputs=[self.map])

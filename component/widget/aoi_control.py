@@ -135,7 +135,6 @@ class AoiControl(WidgetControl):
         # assemble everything in a menu
         self.menu = sw.Menu(
             v_model=False,
-            value=False,
             close_on_click=False,
             close_on_content_click=False,
             children=[card],
@@ -146,3 +145,6 @@ class AoiControl(WidgetControl):
         )
 
         super().__init__(widget=self.menu, position="bottomright")
+
+        # js behaviour
+        self.aoi_view.observe(lambda _: setattr(self.menu, "v_model", False), "updated")
