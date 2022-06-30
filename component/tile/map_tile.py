@@ -1,8 +1,7 @@
 from sepal_ui import sepalwidgets as sw
 from sepal_ui import mapping as sm
 
-from .aoi_view import AoiControl
-from .parameter_view import ParameterControl
+from component import widget as cw
 
 
 class MapTile(sw.Tile):
@@ -13,8 +12,8 @@ class MapTile(sw.Tile):
 
         # create the different control to add to the map
         fullscreen_control = sm.FullScreenControl(self.map, position="topright")
-        aoi_control = AoiControl(self.map)
-        parameter_control = ParameterControl(self.map)
+        aoi_control = cw.AoiControl(self.map)
+        parameter_control = cw.ParameterControl(self.map)
 
         self.map.add_control(fullscreen_control)
         self.map.add_control(aoi_control)

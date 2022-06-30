@@ -8,6 +8,8 @@ import ee
 
 from component.message import cm
 
+__all__ = ["AOIControl"]
+
 
 class AoiView(aoi.AoiView):
     """
