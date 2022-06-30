@@ -64,8 +64,10 @@ class ParameterTile(sw.Tile):
 
         if "TILE" in bin_type:
             size = int(bin_type.replace("TILE", ""))
-            print(size)
             bins = cs.gen_grid(self.aoi_model.feature_collection, size)
+        elif "ADMIN" in bin_type:
+            level = bin_type.replace("ADMIN", "")
+            bins = cs.gen_admin_grid(self.aoi_model.feature_collection, level)
         else:
             raise Exception("not yet ready")
 

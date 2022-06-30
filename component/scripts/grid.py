@@ -36,3 +36,14 @@ def gen_grid(aoi, size):
     cells = xx.map(map_over_x).flatten()
 
     return ee.FeatureCollection(cells).filterBounds(aoi)
+
+
+@su.need_ee
+def gen_admin_grid(aoi, level):
+
+    admin_dataset = ee.FeatureCollection(f"FAO/GAUL/2015/level{level}")
+
+    # use a negative buffer to avoid to include the neighbors
+    aoi_buffer = aoi.geometry().buffer(distance=-1)
+
+    return admin_dataset.filterBounds(aoi_buffer)
