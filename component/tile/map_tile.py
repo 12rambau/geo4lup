@@ -18,9 +18,9 @@ class MapTile(sw.Tile):
         # create the different control to add to the map
         fullscreen_control = sm.FullScreenControl(self.map, position="topright")
         self.aoi_control = cw.AoiControl(self.map)
-        self.parameter_control = cw.ParameterControl(
-            self.map, self.aoi_control.aoi_view.model
-        )
+        aoi_model = self.aoi_control.aoi_view.model
+        self.parameter_control = cw.ParameterControl(self.map, aoi_model)
+        self.export_control = cw.ExportControl(aoi_model)
 
         self.map.add_control(fullscreen_control)
         self.map.add_control(self.parameter_control)
@@ -29,6 +29,9 @@ class MapTile(sw.Tile):
         # add a statebar to the map
         self.state_bar = sw.StateBar().add_msg(cm.computation.state.landing)
         self.map.add_control(WidgetControl(widget=self.state_bar, position="topleft"))
+
+        # create components for on the fly inspection
+        self.map.add_control(self.export_control)
 
         super().__init__(id_="map_tile", title="", inputs=[self.map])
 
@@ -48,8 +51,14 @@ class MapTile(sw.Tile):
             self.state_bar.add_msg(cm.computation.state.missing)
 
         # load the index
-        index = cs.compute_driver_index(aoi_model, model)
-        self.map.addLayer(index, cp.viz, "driver index")
+        ee_index = cs.compute_driver_index(aoi_model, model)
+        self.map.addLayer(ee_index, cp.viz, "driver index")
+        self.export_control.tile.set_data(
+            dataset=ee_index,
+            geometry=aoi_model.feature_collection.geometry(),
+            name="driver_index",
+            aoi_name=aoi_model.name,
+        )
 
         self.state_bar.add_msg(cm.computation.state.complete, False)
 

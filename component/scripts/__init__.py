@@ -4,3 +4,5 @@
 # if you use a module import all the functions here to only have 1 call to make
 from .grid import *
 from .compute import *
+from .gdrive import *
+from .utils import *

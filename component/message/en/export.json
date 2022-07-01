@@ -1,0 +1,12 @@
+{
+    "export": {
+        "title": "Export index",
+        "slider": "Scale (m)",
+        "to_sepal": "To SEPAL",
+        "to_gee": "To Earth Engine",
+        "alert": {
+            "to_gee": "the task have been launched in your GEE acount",
+            "to_sepal": "Map exported to SEPAL"
+        }
+    }
+}

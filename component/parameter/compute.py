@@ -14,6 +14,6 @@ gaul_codes = [
 viz = {
     "min": 1,
     "max": 6,
-    "palette": ["964B00", "FFFF00", "FFA500", "90EE90", "00FF00", "D3D3D3"],
+    "palette": ["#964B00", "#FFFF00", "#FFA500", "#90EE90", "#00FF00", "#D3D3D3"],
 }
 "viz parameters of the driver index"
