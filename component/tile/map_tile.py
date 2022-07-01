@@ -21,6 +21,8 @@ class MapTile(sw.Tile):
         aoi_model = self.aoi_control.aoi_view.model
         self.parameter_control = cw.ParameterControl(self.map, aoi_model)
         self.export_control = cw.ExportControl(aoi_model)
+        # until https://github.com/12rambau/sepal_ui/issues/515 is fixed
+        self.v_inspector = sm.ValueInspector(self.map, position="topleft")
 
         self.map.add_control(fullscreen_control)
         self.map.add_control(self.parameter_control)
@@ -32,6 +34,7 @@ class MapTile(sw.Tile):
 
         # create components for on the fly inspection
         self.map.add_control(self.export_control)
+        self.map.add_control(self.v_inspector)
 
         super().__init__(id_="map_tile", title="", inputs=[self.map])
 
