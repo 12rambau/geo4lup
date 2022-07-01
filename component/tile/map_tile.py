@@ -14,6 +14,7 @@ class MapTile(sw.Tile):
 
         # set a map in the center
         self.map = sm.SepalMap()
+        self.map.height = "85vh"
 
         # create the different control to add to the map
         fullscreen_control = sm.FullScreenControl(self.map, position="topright")
