@@ -6,3 +6,5 @@
 # About
 
 Geospatial application for land use planners undertaking site selection with deforestation risk in Central Africa
+
+![landing](doc/img/landing.png)
