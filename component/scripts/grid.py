@@ -1,5 +1,11 @@
+import inspect
+from pathlib import Path
+
+import pandas as pd
 import ee
 from sepal_ui.scripts import utils as su
+
+from component import parameter as cp
 
 
 @su.need_ee
@@ -39,11 +45,28 @@ def gen_grid(aoi, size):
 
 
 @su.need_ee
-def gen_admin_grid(aoi, level):
+def gen_admin_grid(aoi_model, level):
 
     admin_dataset = ee.FeatureCollection(f"FAO/GAUL/2015/level{level}")
 
-    # use a negative buffer to avoid to include the neighbors
-    aoi_buffer = aoi.geometry().buffer(distance=-1)
+    # different behaviour with respect to the aoi selection
+    # filterbounds cannot be used as it includes all the neighboring area
+    # and using a negative buffer on aoi is to long to compute
+    if aoi_model.name == "cafi_LSIB":
+        bins = admin_dataset.filter(ee.Filter.inList("ADM0_CODE", cp.gaul_codes))
+    elif aoi_model.admin is not None:
+        # extract the first admin line from sepal_ui database
+        gaul_dataset = Path(inspect.getfile(su)).parent / "gaul_database.csv"
+        df = pd.read_csv(gaul_dataset)
+        is_in = df.filter([f"ADM{i}_CODE" for i in range(3)]).isin([aoi_model.admin])
+        aoi_level = int(is_in[~((~is_in).all(axis=1))].idxmax(1).iloc[0][3])
+        line = df[~((~is_in).all(axis=1))]
+        requested_level_code = int(line[f"ADM{level}_CODE"].values[0])
 
-    return admin_dataset.filterBounds(aoi_buffer)
+        # use the computerd bin level only when requested level is bigger than aoi
+        bin_level = level if aoi_level > level else aoi_level
+        bin_code = requested_level_code if aoi_level > level else aoi_model.admin
+
+        bins = admin_dataset.filter(ee.Filter.eq(f"ADM{bin_level}_CODE", bin_code))
+
+    return bins

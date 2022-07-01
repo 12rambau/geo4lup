@@ -31,12 +31,14 @@ class ParameterTile(sw.Tile):
             {"text": getattr(cm.parameter.bin.items, i), "value": i}
             for i in cp.bin_items
         ]
-        w_bins = sw.Select(items=bin_items, label=cm.parameter.bin.label, v_model=None)
+        self.w_bins = sw.Select(
+            items=bin_items, label=cm.parameter.bin.label, v_model=None
+        )
 
         # wire the model to the widgets
-        self.model.bind(w_bins, "bin_type")
+        self.model.bind(self.w_bins, "bin_type")
 
-        super().__init__("", "", [w_bins], sw.Btn(cm.parameter.btn), sw.Alert())
+        super().__init__("", "", [self.w_bins], sw.Btn(cm.parameter.btn), sw.Alert())
 
         # nest tthe tile
         self.nest()
@@ -48,7 +50,7 @@ class ParameterTile(sw.Tile):
         # add some js behaviour
         self.btn.on_event("click", self.select_bining)
 
-    @su.loading_button(debug=False)
+    @su.loading_button(debug=True)
     def select_bining(self, widget, event, data):
 
         # exit if the variables are missing
@@ -67,7 +69,7 @@ class ParameterTile(sw.Tile):
             bins = cs.gen_grid(self.aoi_model.feature_collection, size)
         elif "ADMIN" in bin_type:
             level = bin_type.replace("ADMIN", "")
-            bins = cs.gen_admin_grid(self.aoi_model.feature_collection, level)
+            bins = cs.gen_admin_grid(self.aoi_model, int(level))
         else:
             raise Exception("not yet ready")
 
@@ -77,6 +79,13 @@ class ParameterTile(sw.Tile):
         self.m.addLayer(outline, {"palette": sc.secondary}, "bins")
 
         self.updated += 1
+
+        return
+
+    def reset(self, change):
+
+        self.w_bins.v_model = None
+        self.m.remove_layer("bins", none_ok=True)
 
         return
 

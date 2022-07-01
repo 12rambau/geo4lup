@@ -1,0 +1,10 @@
+{
+    "computation": {
+        "state": {
+            "landing": "No index computed yet",
+            "missing": "Some parameter were missing",
+            "computing": "Computing the driver index",
+            "complete": "driver computation complete"
+        }
+    }
+}

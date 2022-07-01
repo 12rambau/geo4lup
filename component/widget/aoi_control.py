@@ -7,6 +7,7 @@ from sepal_ui import color as sc
 import ee
 
 from component.message import cm
+from component import parameter as cp
 
 __all__ = ["AoiControl"]
 
@@ -47,16 +48,8 @@ class AoiView(aoi.AoiView):
         self.w_asset.readonly = True
 
         # only use the countries that are in the CAFI project
-        countries = [
-            68,  # Democratic republic of the Congo
-            59,  # congo
-            89,  # gabon
-            45,  # cameroon
-            76,  # equatorial guinea
-            49,  # Central African Republic
-        ]
         tmp_item = self.w_admin_0.items.copy()
-        tmp_item = [i for i in tmp_item if i["value"] in countries]
+        tmp_item = [i for i in tmp_item if i["value"] in cp.gaul_codes]
         self.w_admin_0.items = []
         self.w_admin_0.items = tmp_item
 
