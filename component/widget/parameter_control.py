@@ -76,6 +76,8 @@ class ParameterTile(sw.Tile):
         outline = empty.paint(featureCollection=bins, color=1, width=2)
         self.m.addLayer(outline, {"palette": sc.secondary}, "bins")
 
+        self.updated += 1
+
         return
 
 
@@ -116,3 +118,6 @@ class ParameterControl(WidgetControl):
         )
 
         super().__init__(widget=self.menu, position="bottomright")
+
+        # add js behaviour
+        self.tile.observe(lambda _: setattr(self.menu, "v_model", False), "updated")
